@@ -1,2 +1,7 @@
 # oim3640
-Course Work for OIM3640
+This is my course Work for OIM3640. 
+
+## About Me 
+- Name: Caroline DiGiovanni 
+- Concentration: Business Analytics 
+- Interests: Beach, Swimming, Puzzles, Gym
