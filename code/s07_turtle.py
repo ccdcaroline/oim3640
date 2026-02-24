@@ -13,5 +13,5 @@ def draw_spiral(t):
     for i in range(72): 
         draw_square(t, 50 + i * 2)
         t.left(5)
-turtle_done()
+
 
