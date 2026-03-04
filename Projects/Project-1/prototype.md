@@ -1,0 +1,11 @@
+# Steps Needed To Build 
+- Ask user for bodyweight
+- Decide on a formula or simple rule to calculate daily water goal (e.g. 0.5–1 ounce per pound of bodyweight or a fixed number)
+- Ask user for amount of time exercised
+- Decide on a formula or simple rule to calculate how much needs to be added to total daily consumption goal
+- Provide a way for the user to enter water they have just consumed (in ounces or milliliters)
+- Keep a running total of water consumed so far that day
+- Show the user how much water is remaining to reach their goal
+- Reset the total at the start of each new day
+- Optionally allow the user to change units (ounces vs. liters) or input personal factors later
+- Display a simple message when the daily goal is met
