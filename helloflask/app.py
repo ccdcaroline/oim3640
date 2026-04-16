@@ -1,9 +1,24 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 render_template
 from stocks import get_price
-from weather import get_temperature
+from weather import get_temperature 
+
 
 app = Flask(__name__)
+
+@app.route('/ticker')
+def ticker():
+    return render_template('stock-form.html')
+
+@app.post('/ticker')
+def ticker_post():
+    ticker = request.form.get('symbol')
+    try:
+        price = get_price(ticker)
+        return f"The current price of {ticker.upper()} is ${price:.2f}"
+    except:
+        return f"This ticker symbol '{ticker.upper()}' is not found. Please try again."
+
 
 @app.route('/')
 def home():
@@ -31,7 +46,7 @@ def stock_price(ticker):
 @app.route('/weather/<city>')
 def weather(city):
     temp = get_temperature(city)
-    return f''
+    return f'The current temperature in {city.capitalize()} is {temp:.1f}°C'
 
 
 
