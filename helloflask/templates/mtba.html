@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MTBA Stations</title>
+  </head>
+  <body>
+    <h1>MTBA Stations</h1>
+    <p>This is a simple base page with a few sample station names.</p>
+
+    {% for line, stops in stations.items() %}
+      <section>
+        <h2>{{ line }}</h2>
+        <ul>
+          {% for stop in stops %}
+            <li>{{ stop }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  </body>
+</html>
