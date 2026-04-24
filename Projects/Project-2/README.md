@@ -1,4 +1,4 @@
-# Project 4: Taylor Swift Lyrics Repetition Analysis
+# Project 2: Taylor Swift Lyrics Repetition Analysis
 
 This project contains **3 progressive Python code versions** that build toward a complete lyric repetition analyzer.
 
@@ -27,7 +27,7 @@ Sample lyric data is in:
 
 ## Run
 
-From this folder (`Projects/Project-4`):
+From this folder (`Projects/Project-2`):
 
 ```bash
 python3 code1_basic_frequency.py
