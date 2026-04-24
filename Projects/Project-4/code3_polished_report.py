@@ -5,7 +5,6 @@ Builds on Code 2 by adding:
 - Cleaner code structure for maintainability
 """
 
-import csv
 import string
 from dataclasses import dataclass
 from pathlib import Path
@@ -70,23 +69,12 @@ class AnalysisResult:
     top_words: list[tuple[str, int]]
 
 
-def load_text(file_path: str, text_column: str = "lyrics") -> str:
-    """Load text from .txt or .csv based on file extension."""
+def load_text_from_txt(file_path: str) -> str:
+    """Load text from a .txt file."""
     path = Path(file_path)
-    if path.suffix.lower() == ".txt":
-        return path.read_text(encoding="utf-8")
-
-    if path.suffix.lower() == ".csv":
-        lines = []
-        with open(path, "r", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                value = row.get(text_column, "")
-                if value:
-                    lines.append(value)
-        return "\n".join(lines)
-
-    raise ValueError("Unsupported file format. Use .txt or .csv")
+    if path.suffix.lower() != ".txt":
+        raise ValueError("Unsupported file format. Use .txt")
+    return path.read_text(encoding="utf-8")
 
 
 def tokenize_and_clean(text: str, stop_words: set[str]) -> tuple[list[str], list[str]]:
@@ -184,7 +172,7 @@ def save_bar_chart(top_words: list[tuple[str, int]], output_path: str) -> None:
 
 def run_pipeline(input_path: str, chart_path: str) -> None:
     """Run full polished analysis pipeline and present results."""
-    text = load_text(input_path)
+    text = load_text_from_txt(input_path)
     raw_tokens, cleaned_tokens = tokenize_and_clean(text, STOP_WORDS)
     result = summarize_analysis(raw_tokens, cleaned_tokens)
 

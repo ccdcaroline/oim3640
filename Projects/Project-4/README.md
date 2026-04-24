@@ -5,7 +5,7 @@ This project contains **3 progressive Python code versions** that build toward a
 ## Files
 
 - `code1_basic_frequency.py`
-  - Loads text from `.txt`, `.csv`, or a pasted string
+  - Loads text from a `.txt` file
   - Counts word frequency with a dictionary
   - Prints top 10 words + basic stats
 
@@ -24,7 +24,6 @@ This project contains **3 progressive Python code versions** that build toward a
 
 Sample lyric data is in:
 - `data/taylor_sample_lyrics.txt`
-- `data/taylor_sample_lyrics.csv`
 
 ## Run
 

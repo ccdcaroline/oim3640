@@ -7,7 +7,6 @@ Builds on Code 1 by adding:
 - Well-named functions
 """
 
-import csv
 import string
 from pathlib import Path
 
@@ -63,17 +62,6 @@ def load_text_from_txt(file_path: str) -> str:
     """Load and return raw text from a txt file."""
     with open(file_path, "r", encoding="utf-8") as file:
         return file.read()
-
-
-def load_text_from_csv(file_path: str, text_column: str = "lyrics") -> str:
-    """Load lyric text from a CSV column."""
-    lines = []
-    with open(file_path, "r", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            if text_column in row and row[text_column]:
-                lines.append(row[text_column])
-    return "\n".join(lines)
 
 
 def clean_text(text: str) -> list[str]:
@@ -167,10 +155,9 @@ def run_analysis(text: str, chart_path: str) -> None:
 
 
 def main() -> None:
-    """Load sample data and run Code 2 analysis."""
+    """Load TXT sample data and run Code 2 analysis."""
     base_dir = Path(__file__).resolve().parent
     text = load_text_from_txt(str(base_dir / "data" / "taylor_sample_lyrics.txt"))
-    # text = load_text_from_csv(str(base_dir / "data" / "taylor_sample_lyrics.csv"))
 
     chart_output = str(base_dir / "top_words_code2.png")
     run_analysis(text, chart_output)
