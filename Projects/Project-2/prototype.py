@@ -48,7 +48,14 @@ def analyze_song(title, lyrics):
     }
 
 
-# Future function to print a summary of results
+def print_summary(results):
+    """Print basic summary statistics for every analyzed song."""
+    for result in results:
+        print(f"Song: {result['title']}")
+        print(f"  Total words: {result['total_words']}")
+        print(f"  Unique words: {result['unique_words']}")
+        print(f"  Most common words: {result['word_counts'].most_common(3)}")
+        print()
 
 
 def main():
