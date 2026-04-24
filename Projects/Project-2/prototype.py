@@ -1,69 +1,43 @@
-"""Base scaffold for a Taylor Swift repetition analyzer.
-
-This is a minimal starting file for a program that can later be
-expanded with more lyric input, frequency analysis, repetition
-patterns, and summary reporting.
-"""
-
-import re
-from collections import Counter
-
-
-def load_lyrics():
-    """Return a small sample of song lyrics to analyze."""
-    return {
-        "Sample Song": (
-            "I sing the same line again and again\n"
-            "I sing the same line again and again\n"
-            "Nothing really changes in this simple song"
-        ),
-    }
-
-
-def normalize_text(text):
-    """Normalize lyrics text for consistent analysis."""
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9\s]", "", text)
-    return text
-
-
-def count_words(text):
-    """Count words in a song lyric string."""
-    cleaned = normalize_text(text)
-    words = cleaned.split()
-    return Counter(words)
-
-
-def analyze_song(title, lyrics):
-    """Build a simple analysis result for one song."""
-    counts = count_words(lyrics)
-    total_words = sum(counts.values())
-    unique_words = len(counts)
-
-    return {
-        "title": title,
-        "total_words": total_words,
-        "unique_words": unique_words,
-        "word_counts": counts,
-    }
-
-
-def print_summary(results):
-    """Print basic summary statistics for every analyzed song."""
-    for result in results:
-        print(f"Song: {result['title']}")
-        print(f"  Total words: {result['total_words']}")
-        print(f"  Unique words: {result['unique_words']}")
-        print(f"  Most common words: {result['word_counts'].most_common(3)}")
-        print()
-
-
+from pathlib import Path
+ 
+def load_text(file_name="lyrics.txt"):
+    file_path = Path(__file__).resolve().parent / file_name
+    if not file_path.exists():
+        raise FileNotFoundError(
+            f"Could not find {file_name}. Put it here:\n{file_path}"
+        )
+    return file_path.read_text(encoding="utf-8")
+ 
+def count_word_frequencies(text):
+    words = text.split()  # basic split only
+    freq = {}
+ 
+    for word in words:
+        if word in freq:
+            freq[word] += 1
+        else:
+            freq[word] = 1
+ 
+    return freq
+ 
+def print_stats(freq):
+    total_words = sum(freq.values())
+    unique_words = len(freq)
+ 
+    # sort by frequency (highest first)
+    top_10 = sorted(freq.items(), key=lambda x: x[1], reverse=True)[:10]
+ 
+    print("=== BASIC ANALYSIS ===")
+    print("Total words:", total_words)
+    print("Unique words:", unique_words)
+    print("Top 10 words:")
+    for word, count in top_10:
+        print(f"{word}: {count}")
+ 
 def main():
-    songs = load_lyrics()
-    results = [analyze_song(title, lyrics) for title, lyrics in songs.items()]
-    print_summary(results)
-
-
-
+    text = load_text("lyrics.txt")
+    freq = count_word_frequencies(text)
+    print_stats(freq)
+ 
 if __name__ == "__main__":
     main()
