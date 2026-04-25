@@ -14,13 +14,17 @@
 - The params dictionary in requests.get() is automatically converted into URL query parameters, which makes the code cleaner and easier to read.
 
 
-
+## Date: April 24, 2026 
 
 **What I asked AI to do:**
-- e.g., "Generate a function to parse CSV files"
+- Turn my MBTA stop finder into a Flask web app where the user can type in a place and get the nearest MBTA stop.
 
 **What I didn't understand in the generated code:**
-- e.g., "The `with` statement for file handling was new to me"
+- eI was also confused by request.form.get("place") because I did not realize it gets the user’s answer from the HTML form.
+- The try and except parts were a little confusing because there are different types of errors being handled.
 
 **What I learned:**
-- e.g., "Context managers automatically close files even if an error occurs"
+- Flask can take what the user types into HTML and use it in Python.
+- The app uses Mapbox to turn the place into coordinates, then uses the MBTA API to find the closest stop.
+- try and except help the app show a helpful error message instead of crashing.
+- The result page uses Flask variables to display the place, stop name, and wheelchair accessibility.

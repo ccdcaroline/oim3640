@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <title>Core Features Plan</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 30px auto; padding: 0 12px; background: #f8fafc; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-top: 14px; }
+    .muted { color: #6b7280; }
+    button { margin-top: 14px; padding: 10px 14px; border: none; border-radius: 8px; background: #059669; color: white; cursor: pointer; }
+    button:hover { background: #047857; }
+    a { color: #2563eb; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>Your Core Features Plan</h1>
+
+  <div class="card">
+    <p><strong>Mood:</strong> {{ mood }}</p>
+    <p><strong>Energy:</strong> {{ energy }}/10</p>
+    <p><strong>Goal:</strong> {{ goal }}</p>
+    <p><strong>Intensity:</strong> {{ level }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Workout</h3>
+    <ul>
+      {% for item in plan %}
+      <li>{{ item.name }} - {{ item.sets }} sets x {{ item.reps }} reps</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <form method="post" action="/plan">
+    <input type="hidden" name="mood" value="{{ mood }}">
+    <input type="hidden" name="energy" value="{{ energy }}">
+    <input type="hidden" name="goal" value="{{ goal }}">
+    <button type="submit">Refresh Plan</button>
+  </form>
+
+  <p><a href="/">Back</a></p>
+</body>
+</html>
