@@ -166,6 +166,10 @@
         <div class="info-value">{{ goal }}</div>
       </div>
       <div class="info-item">
+        <div class="info-label">Muscle Group</div>
+        <div class="info-value">{{ muscle }}</div>
+      </div>
+      <div class="info-item">
         <div class="info-label">Intensity</div>
         <div class="info-value">{{ intensity }}</div>
       </div>
@@ -195,6 +199,7 @@
       <input type="hidden" name="mood" value="{{ mood }}">
       <input type="hidden" name="energy" value="{{ energy }}">
       <input type="hidden" name="goal" value="{{ goal }}">
+      <input type="hidden" name="muscle" value="{{ muscle }}">
       <input type="hidden" name="city" value="{{ city }}">
       <button type="submit">🔄 Get New Recommendations</button>
     </form>

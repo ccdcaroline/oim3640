@@ -4,8 +4,9 @@ import requests
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
 
-# Load .env from the same directory as this file
-load_dotenv('.env')
+# Load .env from the same directory as this file (not current working directory)
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+load_dotenv(env_path)
 
 app = Flask(__name__)
 
@@ -16,6 +17,7 @@ API_NINJAS_KEY = os.getenv("API_NINJAS_KEY", "")
 print(f"=== API Keys Loaded ===")
 print(f"OPENWEATHER_API_KEY: {'SET' if OPENWEATHER_API_KEY else 'MISSING'}")
 print(f"API_NINJAS_KEY: {'SET' if API_NINJAS_KEY else 'MISSING'}")
+print(f"env_path: {env_path}")
 print(f"========================")
  
 FALLBACK_EXERCISES = {
@@ -102,16 +104,35 @@ def get_weather(city):
         }
  
  
-def fetch_exercises(goal):
-    print(f"=== fetch_exercises called with goal: {goal} ===")
+def fetch_exercises(goal, muscle=None):
+    print(f"=== fetch_exercises called with goal: {goal}, muscle: {muscle} ===")
     print(f"API_NINJAS_KEY present: {bool(API_NINJAS_KEY)}")
     
+    # Map user-friendly muscle names to API Ninjas expected names
+    muscle_mapping = {
+        "chest": "chest",
+        "back": "lats",
+        "arms": "biceps",
+        "legs": "quadriceps",
+        "shoulders": "shoulders",
+        "core": "abdominals",
+        "full_body": None,  # Will use goal-based default
+    }
+    
+    # Use user-selected muscle group, or fall back to goal-based default
     goal_to_muscle = {
         "strength": "chest",
         "fat loss": "abdominals",
         "mobility": "lower_back",
     }
-    muscle = goal_to_muscle.get(goal, "chest")
+    
+    # Use the user-selected muscle if provided, otherwise use goal default
+    if muscle and muscle != "full_body":
+        api_muscle = muscle_mapping.get(muscle, "chest")
+    else:
+        api_muscle = goal_to_muscle.get(goal, "chest")
+    
+    print(f"Using API muscle: {api_muscle}")
  
     if not API_NINJAS_KEY:
         print("Using fallback exercises (no API key)")
@@ -120,7 +141,8 @@ def fetch_exercises(goal):
     try:
         url = "https://api.api-ninjas.com/v1/exercises"
         headers = {"X-Api-Key": API_NINJAS_KEY}
-        params = {"muscle": muscle}
+        params = {"muscle": api_muscle}
+        print(f"Calling Ninjas API with muscle: {api_muscle}")
         r = requests.get(url, headers=headers, params=params, timeout=8)
         r.raise_for_status()
         data = r.json()
@@ -185,10 +207,17 @@ def plan():
     mood = request.form.get("mood", "happy")
     energy = int(request.form.get("energy", 5))
     goal = request.form.get("goal", "strength")
-    city = request.form.get("city", "Wellesley, MA")
- 
+    muscle = request.form.get("muscle", "chest")
+    city = request.form.get("city", "Boston, MA")
+    
+    print(f"=== PLAN ROUTE ===")
+    print(f"city: {city}")
+    print(f"OPENWEATHER_API_KEY in plan(): {repr(OPENWEATHER_API_KEY)}")
+    
     weather = get_weather(city)
-    exercises = fetch_exercises(goal)
+    print(f"Weather result in plan(): {weather}")
+    
+    exercises = fetch_exercises(goal, muscle)
     intensity, weather_note, daily_plan = build_plan(mood, energy, goal, weather, exercises)
  
     return render_template(
@@ -196,6 +225,7 @@ def plan():
         mood=mood,
         energy=energy,
         goal=goal,
+        muscle=muscle,
         city=city,
         weather=weather,
         intensity=intensity,
