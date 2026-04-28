@@ -8,9 +8,15 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 
 app = Flask(__name__)
- 
+
+# Debug: Print API key status on startup
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
 API_NINJAS_KEY = os.getenv("API_NINJAS_KEY", "")
+
+print(f"=== API Keys Loaded ===")
+print(f"OPENWEATHER_API_KEY: {'SET' if OPENWEATHER_API_KEY else 'MISSING'}")
+print(f"API_NINJAS_KEY: {'SET' if API_NINJAS_KEY else 'MISSING'}")
+print(f"========================")
  
 FALLBACK_EXERCISES = {
     "strength": [
@@ -53,6 +59,9 @@ def energy_to_intensity(energy, mood):
  
  
 def get_weather(city):
+    print(f"=== get_weather called with city: {city} ===")
+    print(f"OPENWEATHER_API_KEY present: {bool(OPENWEATHER_API_KEY)}")
+    
     if not OPENWEATHER_API_KEY:
         return {
             "source": "demo",
@@ -75,13 +84,16 @@ def get_weather(city):
         has_bad_weather = any(word in description for word in bad_weather_words)
         extreme_temp = temp_f < 40 or temp_f > 92
  
-        return {
+        result = {
             "source": "openweather",
             "description": description,
             "temp_f": round(temp_f, 1),
             "good_for_outdoor": not (has_bad_weather or extreme_temp),
         }
-    except Exception:
+        print(f"Weather result: {result}")
+        return result
+    except Exception as e:
+        print(f"Weather API error: {e}")
         return {
             "source": "fallback",
             "description": "weather unavailable",
@@ -91,6 +103,9 @@ def get_weather(city):
  
  
 def fetch_exercises(goal):
+    print(f"=== fetch_exercises called with goal: {goal} ===")
+    print(f"API_NINJAS_KEY present: {bool(API_NINJAS_KEY)}")
+    
     goal_to_muscle = {
         "strength": "chest",
         "fat loss": "abdominals",
@@ -99,6 +114,7 @@ def fetch_exercises(goal):
     muscle = goal_to_muscle.get(goal, "chest")
  
     if not API_NINJAS_KEY:
+        print("Using fallback exercises (no API key)")
         return random.sample(FALLBACK_EXERCISES[goal], k=3)
  
     try:
@@ -110,6 +126,7 @@ def fetch_exercises(goal):
         data = r.json()
  
         if not data:
+            print("Ninjas API returned empty, using fallback")
             return random.sample(FALLBACK_EXERCISES[goal], k=3)
  
         cleaned = []
@@ -121,8 +138,11 @@ def fetch_exercises(goal):
                 }
             )
  
-        return random.sample(cleaned, k=min(3, len(cleaned)))
-    except Exception:
+        result = random.sample(cleaned, k=min(3, len(cleaned)))
+        print(f"Got {len(cleaned)} exercises from API, returning {len(result)}")
+        return result
+    except Exception as e:
+        print(f"Ninjas API error: {e}")
         return random.sample(FALLBACK_EXERCISES[goal], k=3)
  
  

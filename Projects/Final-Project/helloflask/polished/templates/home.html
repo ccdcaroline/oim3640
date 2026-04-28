@@ -1,85 +1,135 @@
 <!doctype html>
 <html>
 <head>
-  <title>Polished Workout Recommender</title>
+  <title>FitPlan - Personalized Workout Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 860px;
-      margin: 32px auto;
-      padding: 0 16px;
-      background: linear-gradient(135deg, #f8fafc, #eef2ff);
-      color: #1f2937;
-    }
-    .card {
-      background: white;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      padding: 20px;
-      margin-top: 16px;
-    }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    label { display: block; font-size: 14px; margin-bottom: 6px; color: #374151; }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 14px;
+    * {
       box-sizing: border-box;
     }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      color: #1a1a2e;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .subtitle {
+      color: #666;
+      margin: 0 0 32px 0;
+      font-size: 16px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e1e1e1;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      background: #fafafa;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      background: white;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
     button {
-      margin-top: 16px;
-      background: #2563eb;
+      width: 100%;
+      margin-top: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
       cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    button:hover { background: #1d4ed8; }
-    .subtitle { color: #6b7280; margin-top: 0; }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
-  <h1>Polished</h1>
-  <p class="subtitle">Mood + Energy + Goal + Weather + API Exercise Suggestions</p>
+  <div class="container">
+    <h1>💪 FitPlan</h1>
+    <p class="subtitle">Get a personalized workout based on your mood, energy, and the weather!</p>
  
-  <form method="post" action="/plan" class="card">
-    <div class="grid">
-      <div>
-        <label>Mood</label>
-        <select name="mood" required>
-          <option value="happy">Happy</option>
-          <option value="stressed">Stressed</option>
-          <option value="tired">Tired</option>
-          <option value="motivated">Motivated</option>
-        </select>
+    <form method="post" action="/plan">
+      <div class="row">
+        <div class="form-group">
+          <label>Mood</label>
+          <select name="mood" required>
+            <option value="happy">😊 Happy</option>
+            <option value="stressed">😰 Stressed</option>
+            <option value="tired">😴 Tired</option>
+            <option value="motivated">🔥 Motivated</option>
+          </select>
+        </div>
+ 
+        <div class="form-group">
+          <label>Energy Level (1-10)</label>
+          <input type="number" name="energy" min="1" max="10" value="5" required>
+        </div>
       </div>
  
-      <div>
-        <label>Energy (1-10)</label>
-        <input type="number" name="energy" min="1" max="10" value="5" required>
+      <div class="row">
+        <div class="form-group">
+          <label>Goal</label>
+          <select name="goal" required>
+            <option value="strength">💪 Strength</option>
+            <option value="fat loss">🔥 Fat Loss</option>
+            <option value="mobility">🧘 Mobility</option>
+          </select>
+        </div>
+ 
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" name="city" value="Boston, MA" required placeholder="Enter your city">
+        </div>
       </div>
  
-      <div>
-        <label>Goal</label>
-        <select name="goal" required>
-          <option value="strength">Strength</option>
-          <option value="fat loss">Fat Loss</option>
-          <option value="mobility">Mobility</option>
-        </select>
-      </div>
- 
-      <div>
-        <label>City</label>
-        <input type="text" name="city" value="Wellesley, MA" required>
-      </div>
-    </div>
- 
-    <button type="submit">Generate Daily Plan</button>
-  </form>
+      <button type="submit">Generate My Workout Plan</button>
+    </form>
+  </div>
 </body>
 </html>

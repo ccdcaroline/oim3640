@@ -1,76 +1,205 @@
 <!doctype html>
 <html>
 <head>
-  <title>Polished Daily Plan</title>
+  <title>Your Workout Plan - FitPlan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      max-width: 860px;
-      margin: 32px auto;
-      padding: 0 16px;
-      background: linear-gradient(135deg, #f8fafc, #eef2ff);
-      color: #1f2937;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
     }
-    .card {
+    .container {
       background: white;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      padding: 20px;
-      margin-top: 16px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
     }
-    .muted { color: #6b7280; font-size: 14px; }
-    ul { padding-left: 18px; }
-    li { margin-bottom: 12px; }
-    .exercise-name { font-weight: 600; }
+    h1 {
+      margin: 0 0 24px 0;
+      color: #1a1a2e;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    h2 {
+      margin: 24px 0 16px 0;
+      color: #1a1a2e;
+      font-size: 20px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .info-item {
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+    .info-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-top: 4px;
+    }
+    .weather-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+    .weather-card .temp {
+      font-size: 48px;
+      font-weight: 700;
+    }
+    .weather-card .desc {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    .weather-card .note {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-top: 8px;
+    }
+    .exercise-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .exercise-item {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      border-left: 4px solid #667eea;
+    }
+    .exercise-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .exercise-prescription {
+      font-size: 16px;
+      color: #667eea;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+    .exercise-note {
+      font-size: 14px;
+      color: #666;
+    }
+    .source-badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #e1e1e1;
+      color: #666;
+      margin-top: 8px;
+    }
+    .source-badge.api {
+      background: #d1fae5;
+      color: #059669;
+    }
+    .source-badge.fallback {
+      background: #fef3c7;
+      color: #d97706;
+    }
     button {
-      margin-top: 16px;
-      background: #059669;
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    button:hover { background: #047857; }
-    a { color: #2563eb; text-decoration: none; }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>Your Polished Plan</h1>
+  <div class="container">
+    <h1>Your Workout Plan</h1>
  
-  <div class="card">
-    <p><strong>Mood:</strong> {{ mood }}</p>
-    <p><strong>Energy:</strong> {{ energy }}/10</p>
-    <p><strong>Goal:</strong> {{ goal }}</p>
-    <p><strong>Intensity:</strong> {{ intensity }}</p>
-    <p><strong>Weather in {{ city }}:</strong> {{ weather.description }} ({{ weather.temp_f }}°F)</p>
-    <p><strong>Weather note:</strong> {{ weather_note }}</p>
-    <p class="muted">Weather source: {{ weather.source }}</p>
-  </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Mood</div>
+        <div class="info-value">{{ mood }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Energy</div>
+        <div class="info-value">{{ energy }}/10</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Goal</div>
+        <div class="info-value">{{ goal }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Intensity</div>
+        <div class="info-value">{{ intensity }}</div>
+      </div>
+    </div>
  
-  <div class="card">
-    <h3>Exercise Suggestions</h3>
-    <ul>
+    <div class="weather-card">
+      <div class="temp">{{ weather.temp_f }}°F</div>
+      <div class="desc">{{ weather.description|title }}</div>
+      <div class="note">{{ weather_note }}</div>
+      <span class="source-badge {% if weather.source == 'openweather' %}api{% else %}fallback{% endif %}">
+        {{ weather.source }}
+      </span>
+    </div>
+ 
+    <h2>Exercises</h2>
+    <ul class="exercise-list">
       {% for item in plan %}
-      <li>
+      <li class="exercise-item">
         <div class="exercise-name">{{ item.name }}</div>
-        <div>{{ item.prescription }}</div>
-        <div class="muted">{{ item.note }}</div>
+        <div class="exercise-prescription">{{ item.prescription }}</div>
+        <div class="exercise-note">{{ item.note }}</div>
       </li>
       {% endfor %}
     </ul>
+ 
+    <form method="post" action="/plan">
+      <input type="hidden" name="mood" value="{{ mood }}">
+      <input type="hidden" name="energy" value="{{ energy }}">
+      <input type="hidden" name="goal" value="{{ goal }}">
+      <input type="hidden" name="city" value="{{ city }}">
+      <button type="submit">🔄 Get New Recommendations</button>
+    </form>
+ 
+    <a href="/" class="back-link">← Create New Plan</a>
   </div>
- 
-  <form method="post" action="/plan">
-    <input type="hidden" name="mood" value="{{ mood }}">
-    <input type="hidden" name="energy" value="{{ energy }}">
-    <input type="hidden" name="goal" value="{{ goal }}">
-    <input type="hidden" name="city" value="{{ city }}">
-    <button type="submit">Refresh for New Recommendations</button>
-  </form>
- 
-  <p style="margin-top:14px;"><a href="/">Back to form</a></p>
 </body>
 </html>
