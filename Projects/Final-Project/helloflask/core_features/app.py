@@ -1,6 +1,12 @@
+import os
 import random
+import requests
 from flask import Flask, request, render_template
- 
+from dotenv import load_dotenv
+
+# Load .env from the same directory as this file
+load_dotenv('.env')
+
 app = Flask(__name__)
  
 WORKOUT_DB = {

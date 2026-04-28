@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <title>Polished Daily Plan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 16px;
+      background: linear-gradient(135deg, #f8fafc, #eef2ff);
+      color: #1f2937;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .muted { color: #6b7280; font-size: 14px; }
+    ul { padding-left: 18px; }
+    li { margin-bottom: 12px; }
+    .exercise-name { font-weight: 600; }
+    button {
+      margin-top: 16px;
+      background: #059669;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover { background: #047857; }
+    a { color: #2563eb; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>Your Polished Plan</h1>
+ 
+  <div class="card">
+    <p><strong>Mood:</strong> {{ mood }}</p>
+    <p><strong>Energy:</strong> {{ energy }}/10</p>
+    <p><strong>Goal:</strong> {{ goal }}</p>
+    <p><strong>Intensity:</strong> {{ intensity }}</p>
+    <p><strong>Weather in {{ city }}:</strong> {{ weather.description }} ({{ weather.temp_f }}°F)</p>
+    <p><strong>Weather note:</strong> {{ weather_note }}</p>
+    <p class="muted">Weather source: {{ weather.source }}</p>
+  </div>
+ 
+  <div class="card">
+    <h3>Exercise Suggestions</h3>
+    <ul>
+      {% for item in plan %}
+      <li>
+        <div class="exercise-name">{{ item.name }}</div>
+        <div>{{ item.prescription }}</div>
+        <div class="muted">{{ item.note }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+ 
+  <form method="post" action="/plan">
+    <input type="hidden" name="mood" value="{{ mood }}">
+    <input type="hidden" name="energy" value="{{ energy }}">
+    <input type="hidden" name="goal" value="{{ goal }}">
+    <input type="hidden" name="city" value="{{ city }}">
+    <button type="submit">Refresh for New Recommendations</button>
+  </form>
+ 
+  <p style="margin-top:14px;"><a href="/">Back to form</a></p>
+</body>
+</html>

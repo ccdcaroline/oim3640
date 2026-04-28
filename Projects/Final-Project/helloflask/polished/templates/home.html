@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <title>Polished Workout Recommender</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 16px;
+      background: linear-gradient(135deg, #f8fafc, #eef2ff);
+      color: #1f2937;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    label { display: block; font-size: 14px; margin-bottom: 6px; color: #374151; }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    .subtitle { color: #6b7280; margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>Polished</h1>
+  <p class="subtitle">Mood + Energy + Goal + Weather + API Exercise Suggestions</p>
+ 
+  <form method="post" action="/plan" class="card">
+    <div class="grid">
+      <div>
+        <label>Mood</label>
+        <select name="mood" required>
+          <option value="happy">Happy</option>
+          <option value="stressed">Stressed</option>
+          <option value="tired">Tired</option>
+          <option value="motivated">Motivated</option>
+        </select>
+      </div>
+ 
+      <div>
+        <label>Energy (1-10)</label>
+        <input type="number" name="energy" min="1" max="10" value="5" required>
+      </div>
+ 
+      <div>
+        <label>Goal</label>
+        <select name="goal" required>
+          <option value="strength">Strength</option>
+          <option value="fat loss">Fat Loss</option>
+          <option value="mobility">Mobility</option>
+        </select>
+      </div>
+ 
+      <div>
+        <label>City</label>
+        <input type="text" name="city" value="Wellesley, MA" required>
+      </div>
+    </div>
+ 
+    <button type="submit">Generate Daily Plan</button>
+  </form>
+</body>
+</html>
