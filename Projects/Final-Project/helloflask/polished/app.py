@@ -22,26 +22,58 @@ print(f"========================")
  
 FALLBACK_EXERCISES = {
     "strength": [
-        {"name": "Push-ups", "note": "Upper body strength"},
-        {"name": "Bodyweight Squats", "note": "Leg and glute strength"},
-        {"name": "Plank", "note": "Core stability"},
-        {"name": "Lunges", "note": "Balance and lower body strength"},
+        {"name": "Push-ups", "note": "Upper body strength", "difficulty": "medium", "tags": ["bodyweight", "strength"]},
+        {"name": "Bodyweight Squats", "note": "Leg and glute strength", "difficulty": "medium", "tags": ["bodyweight", "strength", "lower body"]},
+        {"name": "Plank", "note": "Core stability", "difficulty": "low", "tags": ["bodyweight", "strength", "core"]},
+        {"name": "Lunges", "note": "Balance and lower body strength", "difficulty": "medium", "tags": ["bodyweight", "strength", "lower body"]},
+        {"name": "Dumbbell Rows", "note": "Back and arm strength", "difficulty": "high", "tags": ["dumbbells", "strength", "back"]},
+        {"name": "Overhead Press", "note": "Shoulder strength", "difficulty": "high", "tags": ["dumbbells", "strength", "shoulders"]},
     ],
     "fat loss": [
-        {"name": "Jumping Jacks", "note": "Light cardio warm-up"},
-        {"name": "Mountain Climbers", "note": "Full-body cardio"},
-        {"name": "High Knees", "note": "Boost heart rate"},
-        {"name": "Burpees", "note": "High intensity conditioning"},
+        {"name": "Jumping Jacks", "note": "Light cardio warm-up", "difficulty": "low", "tags": ["cardio", "fat loss"]},
+        {"name": "Mountain Climbers", "note": "Full-body cardio", "difficulty": "medium", "tags": ["cardio", "fat loss", "core"]},
+        {"name": "High Knees", "note": "Boost heart rate", "difficulty": "medium", "tags": ["cardio", "fat loss", "legs"]},
+        {"name": "Burpees", "note": "High intensity conditioning", "difficulty": "high", "tags": ["cardio", "fat loss", "full body"]},
+        {"name": "Jump Rope", "note": "Quick fat-burning cardio", "difficulty": "medium", "tags": ["cardio", "fat loss"]},
     ],
     "mobility": [
-        {"name": "Cat-Cow", "note": "Spine mobility"},
-        {"name": "Hip Flexor Stretch", "note": "Lower body flexibility"},
-        {"name": "Thoracic Rotations", "note": "Upper back mobility"},
-        {"name": "Child's Pose", "note": "Recovery and breathing"},
+        {"name": "Cat-Cow", "note": "Spine mobility", "difficulty": "low", "tags": ["yoga", "mobility"]},
+        {"name": "Hip Flexor Stretch", "note": "Lower body flexibility", "difficulty": "low", "tags": ["yoga", "flexibility"]},
+        {"name": "Thoracic Rotations", "note": "Upper back mobility", "difficulty": "low", "tags": ["yoga", "mobility"]},
+        {"name": "Child's Pose", "note": "Recovery and breathing", "difficulty": "low", "tags": ["yoga", "mobility"]},
+        {"name": "World's Greatest Stretch", "note": "Full-body mobility", "difficulty": "medium", "tags": ["yoga", "mobility", "flexibility"]},
+    ],
+    "endurance": [
+        {"name": "Jogging in Place", "note": "Build aerobic endurance", "difficulty": "low", "tags": ["cardio", "endurance"]},
+        {"name": "Stationary Bike", "note": "Steady-state cardio", "difficulty": "medium", "tags": ["cardio", "endurance"]},
+        {"name": "Jumping Lunges", "note": "Endurance and leg power", "difficulty": "high", "tags": ["cardio", "endurance", "legs"]},
+        {"name": "Burpee Broad Jump", "note": "High intensity endurance", "difficulty": "high", "tags": ["cardio", "endurance"]},
+        {"name": "Step-Ups", "note": "Leg endurance and coordination", "difficulty": "medium", "tags": ["bodyweight", "endurance"]},
+    ],
+    "flexibility": [
+        {"name": "Seated Forward Fold", "note": "Hamstring flexibility", "difficulty": "low", "tags": ["yoga", "flexibility"]},
+        {"name": "Standing Quad Stretch", "note": "Front leg stretch", "difficulty": "low", "tags": ["yoga", "flexibility"]},
+        {"name": "Shoulder Stretch", "note": "Upper body mobility", "difficulty": "low", "tags": ["yoga", "flexibility"]},
+        {"name": "Pigeon Pose", "note": "Hip flexibility", "difficulty": "medium", "tags": ["yoga", "flexibility"]},
+    ],
+    "balance": [
+        {"name": "Single-Leg Stand", "note": "Improve balance", "difficulty": "low", "tags": ["balance", "core"]},
+        {"name": "Heel-to-Toe Walk", "note": "Stability and coordination", "difficulty": "low", "tags": ["balance"]},
+        {"name": "Single-Leg Deadlift", "note": "Balance with strength", "difficulty": "medium", "tags": ["balance", "legs", "dumbbells"]},
+        {"name": "Bosu Ball Squats", "note": "Unstable surface training", "difficulty": "medium", "tags": ["balance", "strength"]},
     ],
 }
  
+STYLE_TAGS = {
+    "bodyweight": ["bodyweight", "strength", "full body"],
+    "dumbbells": ["dumbbells", "strength", "upper body", "lower body"],
+    "cardio": ["cardio", "fat loss", "endurance"],
+    "yoga": ["yoga", "mobility", "flexibility", "balance"],
+    "equipment": ["dumbbells", "cardio", "strength", "endurance"],
+    "any": [],
+}
  
+
 def energy_to_intensity(energy, mood):
     if energy <= 3:
         intensity = "low"
@@ -104,11 +136,42 @@ def get_weather(city):
         }
  
  
-def fetch_exercises(goal, muscle=None):
-    print(f"=== fetch_exercises called with goal: {goal}, muscle: {muscle} ===")
+def normalize_level(level):
+    if level == "beginner":
+        return "low"
+    if level == "intermediate":
+        return "medium"
+    if level == "advanced":
+        return "high"
+    return None
+
+
+def select_fallback_exercises(goal, style, difficulty, count):
+    candidates = FALLBACK_EXERCISES.get(goal, [])[:]
+    style_tags = STYLE_TAGS.get(style, [])
+
+    if style_tags:
+        style_filtered = [item for item in candidates if any(tag in item["tags"] for tag in style_tags)]
+        if style_filtered:
+            candidates = style_filtered
+
+    if difficulty:
+        difficulty_filtered = [item for item in candidates if item["difficulty"] == difficulty]
+        if len(difficulty_filtered) >= count:
+            candidates = difficulty_filtered
+        elif difficulty_filtered:
+            candidates = difficulty_filtered + [item for item in candidates if item not in difficulty_filtered]
+
+    if not candidates:
+        candidates = [item for items in FALLBACK_EXERCISES.values() for item in items]
+
+    return random.sample(candidates, k=min(count, len(candidates)))
+
+
+def fetch_exercises(goal, muscle=None, style="any", difficulty=None, count=4):
+    print(f"=== fetch_exercises called with goal: {goal}, muscle: {muscle}, style: {style}, difficulty: {difficulty}, count: {count} ===")
     print(f"API_NINJAS_KEY present: {bool(API_NINJAS_KEY)}")
     
-    # Map user-friendly muscle names to API Ninjas expected names
     muscle_mapping = {
         "chest": "chest",
         "back": "lats",
@@ -116,17 +179,18 @@ def fetch_exercises(goal, muscle=None):
         "legs": "quadriceps",
         "shoulders": "shoulders",
         "core": "abdominals",
-        "full_body": None,  # Will use goal-based default
+        "full_body": None,
     }
     
-    # Use user-selected muscle group, or fall back to goal-based default
     goal_to_muscle = {
         "strength": "chest",
         "fat loss": "abdominals",
         "mobility": "lower_back",
+        "endurance": "quadriceps",
+        "flexibility": "hamstrings",
+        "balance": "core",
     }
     
-    # Use the user-selected muscle if provided, otherwise use goal default
     if muscle and muscle != "full_body":
         api_muscle = muscle_mapping.get(muscle, "chest")
     else:
@@ -136,36 +200,43 @@ def fetch_exercises(goal, muscle=None):
  
     if not API_NINJAS_KEY:
         print("Using fallback exercises (no API key)")
-        return random.sample(FALLBACK_EXERCISES[goal], k=3)
- 
+        return select_fallback_exercises(goal, style, difficulty, count)
+
     try:
         url = "https://api.api-ninjas.com/v1/exercises"
         headers = {"X-Api-Key": API_NINJAS_KEY}
-        params = {"muscle": api_muscle}
-        print(f"Calling Ninjas API with muscle: {api_muscle}")
+        params = {"muscle": api_muscle} if api_muscle else {}
+        print(f"Calling Ninjas API with params: {params}")
         r = requests.get(url, headers=headers, params=params, timeout=8)
         r.raise_for_status()
         data = r.json()
  
         if not data:
             print("Ninjas API returned empty, using fallback")
-            return random.sample(FALLBACK_EXERCISES[goal], k=3)
+            return select_fallback_exercises(goal, style, difficulty, count)
  
         cleaned = []
-        for item in data[:12]:
+        for item in data[:20]:
             cleaned.append(
                 {
                     "name": item.get("name", "Unknown exercise").title(),
-                    "note": f"Difficulty: {item.get('difficulty', 'unknown')}",
+                    "note": f"Difficulty: {item.get('difficulty', 'unknown')} | {item.get('type', 'general').title()}",
+                    "difficulty": item.get('difficulty', 'medium'),
                 }
             )
  
-        result = random.sample(cleaned, k=min(3, len(cleaned)))
-        print(f"Got {len(cleaned)} exercises from API, returning {len(result)}")
-        return result
+        exact = [item for item in cleaned if item["difficulty"] == difficulty] if difficulty else cleaned
+        if len(exact) >= count:
+            return random.sample(exact, k=count)
+ 
+        if len(cleaned) >= count:
+            return random.sample(cleaned, k=count)
+ 
+        print("API returned too few exercises, using fallback")
+        return select_fallback_exercises(goal, style, difficulty, count)
     except Exception as e:
         print(f"Ninjas API error: {e}")
-        return random.sample(FALLBACK_EXERCISES[goal], k=3)
+        return select_fallback_exercises(goal, style, difficulty, count)
  
  
 def build_plan(mood, energy, goal, weather, exercises):
@@ -208,6 +279,10 @@ def plan():
     energy = int(request.form.get("energy", 5))
     goal = request.form.get("goal", "strength")
     muscle = request.form.get("muscle", "chest")
+    level = request.form.get("level", "auto")
+    workout_type = request.form.get("workout_type", "any")
+    amount = int(request.form.get("amount", 4))
+    amount = max(1, min(amount, 8))
     city = request.form.get("city", "Boston, MA")
     
     print(f"=== PLAN ROUTE ===")
@@ -216,8 +291,9 @@ def plan():
     
     weather = get_weather(city)
     print(f"Weather result in plan(): {weather}")
-    
-    exercises = fetch_exercises(goal, muscle)
+
+    desired_difficulty = normalize_level(level)
+    exercises = fetch_exercises(goal, muscle, workout_type, desired_difficulty, amount)
     intensity, weather_note, daily_plan = build_plan(mood, energy, goal, weather, exercises)
  
     return render_template(
@@ -226,6 +302,9 @@ def plan():
         energy=energy,
         goal=goal,
         muscle=muscle,
+        level=level,
+        workout_type=workout_type,
+        amount=amount,
         city=city,
         weather=weather,
         intensity=intensity,
