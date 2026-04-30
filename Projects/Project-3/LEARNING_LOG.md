@@ -21,7 +21,8 @@
 
 **What I didn't understand in the generated code:**
 - eI was also confused by request.form.get("place") because I did not realize it gets the user’s answer from the HTML form.
-- The try and except parts were a little confusing because there are different types of errors being handled.
+- The try and except parts were a little confusing because there are different types of errors being handled. 
+- I also was confused why only North Station would work when I would type in a location. 
 
 **What I learned:**
 - Flask can take what the user types into HTML and use it in Python.

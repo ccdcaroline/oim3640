@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Core Result</title>
+</head>
+<body>
+  <h1>Result (Core Features)</h1>
+
+  {% if error %}
+    <p style="color: red;"><strong>{{ error }}</strong></p>
+  {% else %}
+    <p>You searched: <strong>{{ place }}</strong></p>
+    <p>Nearest stop: <strong>{{ stop_name }}</strong></p>
+    <p>Wheelchair accessible: <strong>{{ wheelchair_accessible }}</strong></p>
+  {% endif %}
+
+  <p><a href="/">Search again</a></p>
+</body>
+</html>

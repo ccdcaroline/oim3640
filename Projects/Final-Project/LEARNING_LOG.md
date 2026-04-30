@@ -22,3 +22,11 @@
 - The workout is chosen from a dictionary based on the user’s goal and energy level.
 - The HTML can use variables from Python, like {{ mood }} and {{ level }}, to show the results on the page.
 - The {% for item in plan %} loop goes through each exercise and displays it on the webpage.
+
+## Date: April 29, 2026 
+
+**What I asked AI to do:** I asked AI to add more features. The features I asked for was customizable amount of exercises, specific muscle group, excercise levels, etc. 
+
+**What I didn't understand from AI generated code:** I couldn't figure out why my weather API was not loading properly. 
+
+**What I learned:** I learned that you needed put your location city/state, US not city followed by abbriviated state.  

@@ -7,4 +7,7 @@ This is my course Work for OIM3640.
 - Interests: Beach, Swimming, Puzzles, Gym
 
 ## My Projects
-- [First Project](Projects\Project-1) 
+- [First Project: Water Intake Tracker](Projects\Project-1) 
+- [Second Project: Taylor Swift Repitition Analysis](Projects\Project-2)
+- [Third Project: MBTA Station Finder](Projects\Project-3)
+- [Final Project: Workout Maker](Projects\Final-Project\polished) URL: https://workout-final-project.onrender.com  
