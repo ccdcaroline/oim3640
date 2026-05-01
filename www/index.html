@@ -299,6 +299,32 @@
             color: var(--forest-soft);
         }
 
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .gallery-card {
+            border: 1px solid #e2ead8;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #f8faf5;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .gallery-card figcaption {
+            padding: 10px 12px 12px;
+            color: #3e523e;
+            font-size: 0.94rem;
+        }
+
         .split {
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
@@ -355,6 +381,44 @@
 
         .contact-box a {
             font-weight: 700;
+        }
+
+        .copy-btn {
+            margin-top: 8px;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: #e5efd8;
+            color: var(--forest);
+            border: 1px solid #cdddbb;
+            border-radius: 9px;
+            padding: 8px 11px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover,
+        .copy-btn:focus-visible {
+            background: #d9e8c5;
+        }
+
+        .copy-block {
+            width: 100%;
+            min-height: 115px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            border: 1px solid #ccdcb9;
+            background: #fbfdf8;
+            color: #2e402f;
+            font: inherit;
+            font-size: 0.93rem;
+            resize: vertical;
+        }
+
+        .copy-status {
+            margin-top: 8px;
+            min-height: 1.3em;
+            font-size: 0.9rem;
+            color: #345334;
         }
 
         footer {
@@ -426,6 +490,7 @@
         <div class="nav-inner">
             <a href="#home">Home</a>
             <a href="#services">Services</a>
+            <a href="#gallery">Gallery</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </div>
@@ -478,6 +543,27 @@
             </div>
         </section>
 
+        <section id="gallery" class="card" aria-labelledby="gallery-title">
+            <div class="card-inner">
+                <h2 id="gallery-title">Recent Yard Work Photos</h2>
+                <p class="muted">A few simple examples of clean, healthy outdoor spaces Chuck can help maintain.</p>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80" alt="Green lawn and landscaping around a home">
+                        <figcaption>Fresh mowing and edging for a tidy look.</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=900&q=80" alt="Garden tools and plants ready for maintenance">
+                        <figcaption>Garden bed cleanup and plant care support.</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&w=900&q=80" alt="Backyard with trimmed grass and plants">
+                        <figcaption>Seasonal yard refresh for a cleaner property.</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="card split" aria-labelledby="about-title">
             <div class="card-inner">
                 <h2 id="about-title">About Chuck</h2>
@@ -503,11 +589,13 @@
                         <h3>Call or Text</h3>
                         <p><a href="tel:+16177915220">(617) 791-5220</a></p>
                         <p>Best for quick quotes and scheduling.</p>
+                        <button class="copy-btn" type="button" data-copy-text="(617) 791-5220">Copy phone</button>
                     </div>
                     <div class="contact-box">
                         <h3>Email</h3>
                         <p><a href="mailto:chuckdig@gmail.com">chuckdig@gmail.com</a></p>
                         <p>Send photos of your yard for a fast response.</p>
+                        <button class="copy-btn" type="button" data-copy-text="chuckdig@gmail.com">Copy email</button>
                     </div>
                     <div class="contact-box">
                         <h3>Service Area</h3>
@@ -520,6 +608,16 @@
                         <p>7:30 AM - 6:00 PM</p>
                     </div>
                 </div>
+                <div class="contact-box">
+                    <h3>Copy & Paste Contact Details</h3>
+                    <textarea id="contact-copy-block" class="copy-block" readonly>Chuck's Landscaping
+Phone: (617) 791-5220
+Email: chuckdig@gmail.com
+Area: Lower Cape Cod (based in Harwich, MA)
+Hours: Monday - Saturday, 7:30 AM - 6:00 PM</textarea>
+                    <button class="copy-btn" type="button" data-copy-target="contact-copy-block">Copy all details</button>
+                    <p id="copy-status" class="copy-status" aria-live="polite"></p>
+                </div>
             </div>
         </section>
     </main>
@@ -527,5 +625,51 @@
     <footer>
         <p>Chuck's Landscaping | Harwich, MA | Lower Cape Cod</p>
     </footer>
+    <script>
+        (function () {
+            const status = document.getElementById("copy-status");
+
+            async function copyText(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                    return;
+                }
+
+                const fallback = document.createElement("textarea");
+                fallback.value = text;
+                document.body.appendChild(fallback);
+                fallback.select();
+                document.execCommand("copy");
+                document.body.removeChild(fallback);
+            }
+
+            function setStatus(message) {
+                if (status) {
+                    status.textContent = message;
+                }
+            }
+
+            document.querySelectorAll("[data-copy-text], [data-copy-target]").forEach(function (button) {
+                button.addEventListener("click", async function () {
+                    try {
+                        const directText = button.getAttribute("data-copy-text");
+                        const targetId = button.getAttribute("data-copy-target");
+                        const target = targetId ? document.getElementById(targetId) : null;
+                        const text = directText || (target ? target.value : "");
+
+                        if (!text) {
+                            setStatus("Nothing to copy.");
+                            return;
+                        }
+
+                        await copyText(text);
+                        setStatus("Copied to clipboard. You can paste it anywhere.");
+                    } catch (error) {
+                        setStatus("Copy failed. Please copy manually.");
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
