@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h4 mb-3">Find nearest MBTA station in MA</h2>
+    <form method="post">
+      <div class="mb-3">
+        <label for="place" class="form-label">Address or town (Massachusetts)</label>
+        <input
+          id="place"
+          name="place"
+          type="text"
+          class="form-control"
+          placeholder="Example: 800 Boylston St, Boston"
+          required
+        >
+      </div>
+      <button type="submit" class="btn btn-primary">Find Station</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

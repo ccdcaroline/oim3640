@@ -29,3 +29,16 @@
 - The app uses Mapbox to turn the place into coordinates, then uses the MBTA API to find the closest stop.
 - try and except help the app show a helpful error message instead of crashing.
 - The result page uses Flask variables to display the place, stop name, and wheelchair accessibility.
+
+## Date: April 30, 2026 
+
+**What I asked AI to do:** I asked AI to help me improve my Flask app so a user can type in a place or address, and the app finds the nearest MBTA stop. I also asked it to make the app look better by using templates, Bootstrap, and a Mapbox map.
+
+**What I didn't understand in the generated code:**
+- I did not fully understand how find_stop_near connected the Mapbox API and MBTA API together.
+- I was confused at first about how the map markers were added using JavaScript.
+
+**What I learned:** 
+- I learned how Python can send information to an HTML page using render_template.
+- I learned how to use Bootstrap to make the app look cleaner.
+- I learned how Mapbox can show a map and place markers for the searched location and nearest stop. 

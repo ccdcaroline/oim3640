@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h4 mb-3">Result</h2>
+
+    {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      <a href="/" class="btn btn-secondary">Search again</a>
+    {% else %}
+      <p><strong>You entered:</strong> {{ place }}</p>
+      <p><strong>Matched location:</strong> {{ location.name }}</p>
+      <p><strong>Nearest MBTA station:</strong> {{ station.name }}</p>
+      <p><strong>Wheelchair accessible:</strong> {{ station.wheelchair_accessible }}</p>
+      <p><strong>Distance:</strong> {{ station.distance_miles }} miles</p>
+
+      <div id="map"></div>
+
+      <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet" />
+      <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+      <script>
+        /* eslint-disable */
+        // @ts-nocheck
+        try {
+          mapboxgl.accessToken = {{ mapbox_token | tojson }};
+
+          const locationData = {{ location | tojson }};
+          const stationData = {{ station | tojson }};
+          const routeGeo = {{ route_geojson | tojson }};
+
+          const map = new mapboxgl.Map({
+            container: "map",
+            style: "mapbox://styles/mapbox/streets-v12",
+            center: [locationData.lng, locationData.lat],
+            zoom: 10
+          });
+
+          // Address marker
+          new mapboxgl.Marker({ color: "blue" })
+            .setLngLat([locationData.lng, locationData.lat])
+            .setPopup(new mapboxgl.Popup().setText("Address: " + locationData.name))
+            .addTo(map);
+
+          // Station marker
+          new mapboxgl.Marker({ color: "red" })
+            .setLngLat([stationData.lng, stationData.lat])
+            .setPopup(new mapboxgl.Popup().setText("Nearest station: " + stationData.name))
+            .addTo(map);
+
+          // Draw route line if available
+          map.on("load", () => {
+            if (routeGeo) {
+              map.addSource("route", {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  geometry: routeGeo
+                }
+              });
+
+              map.addLayer({
+                id: "route-line",
+                type: "line",
+                source: "route",
+                layout: {
+                  "line-join": "round",
+                  "line-cap": "round"
+                },
+                paint: {
+                  "line-color": "#2563eb",
+                  "line-width": 5
+                }
+              });
+
+              // Fit map to show both points
+              const bounds = new mapboxgl.LngLatBounds();
+              bounds.extend([locationData.lng, locationData.lat]);
+              bounds.extend([stationData.lng, stationData.lat]);
+              map.fitBounds(bounds, { padding: 60 });
+            }
+          });
+        } catch (error) {
+          console.error("Error initializing map:", error);
+          document.getElementById("map").innerHTML = "<p style='color: red;'>Error loading map: " + error.message + "</p>";
+        }
+      </script>
+
+      <a href="/" class="btn btn-secondary mt-3">Search again</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
