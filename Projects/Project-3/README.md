@@ -1,4 +1,5 @@
+**OVERVIEW** 
+This app is a simple web tool that helps users find the nearest MBTA station based on a location they enter. It takes the input, converts it into coordinates using the Mapbox API, and then finds the closest transit stop using the MBTA API . The app displays useful details like the station name, whether it is wheelchair accessible, and the distance from the user’s location. It also shows both the searched location and the nearest stop on an interactive map, making it easy to visualize where everything is.
 
-
-need to: pip install requests 
-
+**HOW TO USE** 
+To use this app, first make sure you have Python set up and install the required packages by running pip install -r requirements.txt. Next, you need to get API keys from Mapbox and the MBTA, and add them to your .env file. After that, you can run the app locally by running app.py, or simply use the deployed version through the Render URL. Once the app is open, type in a location or address and click “Find Station.” The app will then show you the closest MBTA station, whether it is wheelchair accessible, distance in miles, and display it on a map.
