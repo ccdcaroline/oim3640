@@ -1,19 +1,21 @@
 const form = document.getElementById("weather-form");
 const cityInput = document.getElementById("city-input");
-const submitBtn = form.querySelector("button");
-const statusEl = document.getElementById("status-message");
+const submitBtn = document.getElementById("submit-btn");
+const loadingEl = document.getElementById("loading-message");
+const errorEl = document.getElementById("error-message");
 const resultEl = document.getElementById("result");
 
-const locationEl = document.getElementById("location");
-const conditionEl = document.getElementById("condition");
-const weatherIcon = document.getElementById("icon");
+const locationEl = document.getElementById("city");
+const conditionEl = document.getElementById("description");
+const weatherIcon = document.getElementById("weather-icon");
 const tempEl = document.getElementById("temp");
+const tempFEl = document.getElementById("temp-f");
 const feelsLikeEl = document.getElementById("feels-like");
 const humidityEl = document.getElementById("humidity");
 const windEl = document.getElementById("wind");
 const outfitTitleEl = document.getElementById("outfit-title");
-const outfitAdviceEl = document.getElementById("outfit-advice");
-const checklistEl = document.getElementById("outfit-tips");
+const outfitAdviceEl = document.getElementById("outfit-body");
+const checklistEl = document.getElementById("checklist");
 
 function getOutfit(tempC, weatherId) {
   const rainy = weatherId >= 200 && weatherId < 600;
@@ -65,15 +67,12 @@ function getOutfit(tempC, weatherId) {
 function setLoading(isLoading) {
   cityInput.disabled = isLoading;
   submitBtn.disabled = isLoading;
-  if (isLoading) {
-    statusEl.textContent = "Loading weather and outfit advice...";
-    statusEl.className = "status loading";
-  }
+  loadingEl.classList.toggle("hidden", !isLoading);
 }
 
-function setStatus(message, type) {
-  statusEl.textContent = message;
-  statusEl.className = `status ${type}`.trim();
+function showError(message = "") {
+  errorEl.textContent = message;
+  errorEl.classList.toggle("hidden", !message);
 }
 
 function renderChecklist(items) {
@@ -90,12 +89,13 @@ form.addEventListener("submit", async (event) => {
   const city = cityInput.value.trim();
 
   if (!city) {
-    setStatus("Please type a city name first.", "error");
+    showError("Please type a city name first.");
     resultEl.classList.add("hidden");
     return;
   }
 
   setLoading(true);
+  showError("");
   resultEl.classList.add("hidden");
 
   try {
@@ -109,7 +109,8 @@ form.addEventListener("submit", async (event) => {
     const outfit = getOutfit(data.tempC, data.weatherId);
     locationEl.textContent = `${data.city}${data.country ? `, ${data.country}` : ""}`;
     conditionEl.textContent = `${data.condition} - ${data.description}`;
-    tempEl.textContent = `${data.tempC.toFixed(1)}°C (${data.tempF.toFixed(1)}°F)`;
+    tempEl.textContent = `${data.tempC.toFixed(1)}°C`;
+    tempFEl.textContent = `(${data.tempF.toFixed(1)}°F)`;
     feelsLikeEl.textContent = `${data.feelsLikeC.toFixed(1)}°C`;
     humidityEl.textContent = `${data.humidity}%`;
     windEl.textContent = `${data.windKph} km/h`;
@@ -121,10 +122,9 @@ form.addEventListener("submit", async (event) => {
     outfitAdviceEl.textContent = outfit.advice;
     renderChecklist(outfit.checklist);
 
-    setStatus("Success! Outfit plan is ready.", "success");
     resultEl.classList.remove("hidden");
   } catch (error) {
-    setStatus(error.message || "Something went wrong.", "error");
+    showError(error.message || "Something went wrong.");
     resultEl.classList.add("hidden");
   } finally {
     setLoading(false);
