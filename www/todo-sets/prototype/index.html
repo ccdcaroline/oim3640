@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do Prototype</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>To-Do List (Prototype)</h1>
+    <p class="subtitle">Version 1: Add, complete, and delete tasks.</p>
+
+    <form id="todoForm" class="input-row">
+      <input id="todoInput" type="text" placeholder="Type a new task..." autocomplete="off" />
+      <button class="add-btn" type="submit">Add</button>
+    </form>
+
+    <ul id="todoList"></ul>
+    <p id="emptyState" class="empty">No tasks yet. Add your first task.</p>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
