@@ -37,7 +37,19 @@ function showError(message = "") {
 
 async function fetchWeather(city) {
   const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
-  const data = await response.json();
+  const responseText = await response.text();
+  let data = null;
+
+  try {
+    data = JSON.parse(responseText);
+  } catch (error) {
+    if (responseText.trim().startsWith("<")) {
+      throw new Error(
+        "Weather API returned HTML instead of JSON. Start the app with npm start and open http://localhost:3000/prototype."
+      );
+    }
+    throw new Error("Weather API returned invalid data.");
+  }
 
   if (!response.ok) {
     throw new Error(data.error || "Something went wrong.");

@@ -58,6 +58,21 @@ function renderOutfitList(items) {
   });
 }
 
+async function parseApiResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+  if (text.trim().startsWith("<!DOCTYPE") || text.trim().startsWith("<html")) {
+    throw new Error(
+      "Received HTML instead of JSON. Start the Node server and open this app at http://localhost:3000/core-features."
+    );
+  }
+  throw new Error("Unexpected server response. Please restart the server and try again.");
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const city = cityInput.value.trim();
@@ -77,7 +92,7 @@ form.addEventListener("submit", async (event) => {
     const response = await fetch(
       `/api/weather?city=${encodeURIComponent(city)}&units=${units}`
     );
-    const data = await response.json();
+    const data = await parseApiResponse(response);
 
     if (!response.ok) {
       throw new Error(data.error || "Unable to fetch weather data.");

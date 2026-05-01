@@ -17,6 +17,11 @@ const outfitTitleEl = document.getElementById("outfit-title");
 const outfitAdviceEl = document.getElementById("outfit-body");
 const checklistEl = document.getElementById("checklist");
 
+function isHtmlResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  return contentType.includes("text/html");
+}
+
 function getOutfit(tempC, weatherId) {
   const rainy = weatherId >= 200 && weatherId < 600;
   const snowy = weatherId >= 600 && weatherId < 700;
@@ -100,6 +105,12 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}&units=metric`);
+    if (isHtmlResponse(response)) {
+      throw new Error(
+        "Could not reach /api/weather (received HTML). Start the Node server with npm start and open http://localhost:3000/polished."
+      );
+    }
+
     const data = await response.json();
 
     if (!response.ok) {
