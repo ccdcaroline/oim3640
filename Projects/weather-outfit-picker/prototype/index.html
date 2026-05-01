@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototype | Weather Outfit Picker</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="prototype-card">
+        <h1>Weather Outfit Picker</h1>
+        <p class="subtitle">Set 1: prototype</p>
+
+        <form id="weather-form" class="search-row">
+          <input
+            id="city-input"
+            type="text"
+            placeholder="Enter a city (example: Boston)"
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Get Outfit</button>
+        </form>
+
+        <p id="loading-message" class="message hidden">Loading weather...</p>
+        <p id="error-message" class="message error hidden"></p>
+
+        <section id="result" class="weather-box hidden">
+          <p><strong>Location:</strong> <span id="location-text"></span></p>
+          <p><strong>Temperature:</strong> <span id="temp-text"></span></p>
+          <p><strong>Condition:</strong> <span id="condition-text"></span></p>
+          <p><strong>Outfit tip:</strong> <span id="suggestion-text"></span></p>
+        </section>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

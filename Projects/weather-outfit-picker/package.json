@@ -1,0 +1,22 @@
+{
+  "name": "weather-outfit-picker",
+  "version": "1.0.0",
+  "description": "Three-stage weather outfit picker using OpenWeather API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "weather",
+    "openweather",
+    "outfit",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
