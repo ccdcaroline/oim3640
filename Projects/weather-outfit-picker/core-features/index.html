@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Outfit Picker - Core Features</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="gradient-bg"></div>
+    <main class="app">
+      <header class="header">
+        <span class="stage">SET 2: CORE FEATURES</span>
+        <h1>Weather Outfit Picker</h1>
+        <p>Search for your city and get weather-based outfit advice.</p>
+      </header>
+
+      <form id="weather-form" class="search-row">
+        <input
+          id="city-input"
+          type="text"
+          placeholder="Try: Boston, Paris, Tokyo..."
+          aria-label="City name"
+          required
+        />
+        <select id="unit-select" aria-label="Temperature unit">
+          <option value="metric">Celsius</option>
+          <option value="imperial">Fahrenheit</option>
+        </select>
+        <button type="submit">Get Weather</button>
+      </form>
+
+      <p id="loading" class="status loading hidden">Loading weather data...</p>
+      <p id="error" class="status error hidden"></p>
+
+      <section id="result" class="result hidden">
+        <div class="weather-card">
+          <div>
+            <h2 id="location"></h2>
+            <p id="condition" class="muted"></p>
+          </div>
+          <div class="temp-wrap">
+            <img id="icon" alt="Weather icon" />
+            <p id="temp" class="temp"></p>
+          </div>
+        </div>
+
+        <div class="details">
+          <article>
+            <h3>Feels Like</h3>
+            <p id="feels-like"></p>
+          </article>
+          <article>
+            <h3>Humidity</h3>
+            <p id="humidity"></p>
+          </article>
+          <article>
+            <h3>Wind</h3>
+            <p id="wind"></p>
+          </article>
+        </div>
+
+        <article class="outfit-card">
+          <h3>Outfit Suggestion</h3>
+          <ul id="outfit-list"></ul>
+        </article>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
