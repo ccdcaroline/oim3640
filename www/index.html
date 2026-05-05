@@ -2,104 +2,674 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First HTML Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Chuck's Landscaping provides reliable lawn mowing, spring/fall cleanup, garden maintenance, and seasonal yard work across Lower Cape Cod.">
+    <title>Chuck's Landscaping | Lower Cape Cod</title>
+    <style>
+        :root {
+            --forest: #1f3d24;
+            --forest-soft: #2b5a33;
+            --moss: #4b7a42;
+            --sage: #d9e9c8;
+            --cream: #f7f6ef;
+            --soil: #8b5a2b;
+            --text: #1f2f22;
+            --muted: #4a5b4a;
+            --white: #ffffff;
+            --shadow: 0 18px 40px rgba(22, 43, 26, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #f7f6f1 0%, #e8efdc 100%);
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: var(--forest-soft);
+        }
+
+        a:hover {
+            color: var(--forest);
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -999px;
+            top: 10px;
+            background: var(--white);
+            color: var(--forest);
+            padding: 10px 14px;
+            border-radius: 999px;
+            z-index: 9999;
+            font-weight: 700;
+        }
+
+        .skip-link:focus {
+            left: 14px;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 420px;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("https://images.unsplash.com/photo-1599685315640-3736f8f7962f?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.5);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(13, 39, 17, 0.6), rgba(42, 79, 40, 0.85));
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 26px 20px 48px;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            font-size: 1.25rem;
+        }
+
+        .brand span {
+            color: #d6f4bf;
+        }
+
+        .quick-contact {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 0.92rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 999px;
+            padding: 8px 13px;
+            backdrop-filter: blur(3px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .pill:hover,
+        .pill:focus-visible {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-copy {
+            margin-top: 62px;
+            max-width: 760px;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(2rem, 4vw, 3.7rem);
+            margin: 0 0 12px;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            font-size: 1.1rem;
+            max-width: 680px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 12px 16px;
+            border: 1px solid transparent;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--sage);
+            color: var(--forest);
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus-visible {
+            background: #c6dda8;
+        }
+
+        .btn-secondary {
+            border-color: rgba(255, 255, 255, 0.6);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .btn-secondary:hover,
+        .btn-secondary:focus-visible {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(248, 246, 238, 0.96);
+            border-bottom: 1px solid #d9e3d1;
+            backdrop-filter: blur(6px);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--forest);
+            font-weight: 700;
+            padding: 9px 13px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            background: #e7f1da;
+            border-color: #cadcb8;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 34px 20px 60px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 22px;
+        }
+
+        .card-inner {
+            padding: 28px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--forest);
+            font-size: 1.72rem;
+            line-height: 1.2;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .stat {
+            background: #f3f7ec;
+            border: 1px solid #e1e8d7;
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .stat strong {
+            display: block;
+            color: var(--forest);
+            font-size: 1.18rem;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .service {
+            border: 1px solid #e2ead8;
+            border-radius: 14px;
+            padding: 16px;
+            background: #f7faf2;
+        }
+
+        .service h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 1.06rem;
+            color: var(--forest-soft);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .gallery-card {
+            border: 1px solid #e2ead8;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #f8faf5;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .gallery-card figcaption {
+            padding: 10px 12px 12px;
+            color: #3e523e;
+            font-size: 0.94rem;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .about-image {
+            min-height: 100%;
+            object-fit: cover;
+        }
+
+        .steps {
+            margin: 14px 0 0;
+            padding-left: 20px;
+        }
+
+        .steps li + li {
+            margin-top: 8px;
+        }
+
+        .quote-card {
+            border-left: 5px solid var(--moss);
+            padding: 12px 14px;
+            background: #f7f9f4;
+            border-radius: 10px;
+            margin-top: 16px;
+            color: #3f523f;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .contact-box {
+            background: #f5f8ef;
+            border: 1px solid #dde6d2;
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .contact-box h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--forest-soft);
+        }
+
+        .contact-box p {
+            margin: 7px 0;
+        }
+
+        .contact-box a {
+            font-weight: 700;
+        }
+
+        .copy-btn {
+            margin-top: 8px;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: #e5efd8;
+            color: var(--forest);
+            border: 1px solid #cdddbb;
+            border-radius: 9px;
+            padding: 8px 11px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover,
+        .copy-btn:focus-visible {
+            background: #d9e8c5;
+        }
+
+        .copy-block {
+            width: 100%;
+            min-height: 115px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            border: 1px solid #ccdcb9;
+            background: #fbfdf8;
+            color: #2e402f;
+            font: inherit;
+            font-size: 0.93rem;
+            resize: vertical;
+        }
+
+        .copy-status {
+            margin-top: 8px;
+            min-height: 1.3em;
+            font-size: 0.9rem;
+            color: #345334;
+        }
+
+        footer {
+            text-align: center;
+            color: #4f624c;
+            font-size: 0.95rem;
+            padding: 10px 20px 34px;
+        }
+
+        @media (max-width: 900px) {
+            .split {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                max-height: 300px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .hero {
+                min-height: 380px;
+            }
+
+            .hero-copy {
+                margin-top: 40px;
+            }
+
+            .card-inner {
+                padding: 22px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Hello World!</h1>
-        <p>Welcome to my HTML page!</p>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="hero" id="home">
+        <div class="hero-inner">
+            <div class="top-bar">
+                <div class="brand">Chuck's <span>Landscaping</span></div>
+                <div class="quick-contact">
+                    <a class="pill" href="tel:+16177915220">Call: (617) 791-5220</a>
+                    <a class="pill" href="mailto:chuckdig@gmail.com">Email Chuck</a>
+                </div>
+            </div>
+
+            <div class="hero-copy">
+                <h1>Reliable, local landscaping on Lower Cape Cod</h1>
+                <p>Friendly service for mowing, cleanups, and garden maintenance. Chuck helps homeowners keep their properties clean, healthy, and ready for every season.</p>
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="tel:+16177915220">Get a Free Estimate</a>
+                    <a class="btn btn-secondary" href="#services">View Services</a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="#about">About Me</a></li>
-            <li><a href="#favorites">Favorites</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <nav aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
     </nav>
 
-    <main>
-        <section id="about">
-            <h2>About This Page</h2>
-            <p>This is a simple paragraph that shows how to use different HTML tags.</p>
-            <p>You can use <strong>bold</strong> text, <em>italic</em> text, and <mark>highlighted</mark> text.</p>
+    <main id="main">
+        <section class="card" aria-labelledby="why-choose-title">
+            <div class="card-inner">
+                <h2 id="why-choose-title">Why homeowners choose Chuck</h2>
+                <p class="muted">When you hire Chuck, you get straightforward communication, dependable scheduling, and detail-focused yard care from someone local to the area.</p>
+                <div class="stats">
+                    <div class="stat">
+                        <strong>Local & Trusted</strong>
+                        Serving neighbors across Lower Cape Cod.
+                    </div>
+                    <div class="stat">
+                        <strong>Simple Pricing</strong>
+                        Clear estimates before any work starts.
+                    </div>
+                    <div class="stat">
+                        <strong>Season-Ready Yards</strong>
+                        Spring, summer, and fall maintenance plans.
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section id="favorites">
-            <h2>My Favorite Things</h2>
-            <p>Here are some of my favorite items:</p>
-            <ul>
-                <li>Coding</li>
-                <li>Reading</li>
-                <li>Learning new things</li>
-            </ul>
-            <ol>
-                <li>Learn HTML</li>
-                <li>Practice CSS</li>
-                <li>Build awesome pages</li>
-            </ol>
+        <section id="services" class="card" aria-labelledby="services-title">
+            <div class="card-inner">
+                <h2 id="services-title">Landscaping Services</h2>
+                <p class="muted">Flexible one-time visits or recurring upkeep based on your yard and your schedule.</p>
+                <div class="service-grid">
+                    <article class="service">
+                        <h3>Lawn Mowing & Edging</h3>
+                        <p>Keep your property looking clean with regular mowing, trimming, and edge touch-ups.</p>
+                    </article>
+                    <article class="service">
+                        <h3>Spring & Fall Cleanup</h3>
+                        <p>Leaf removal, debris cleanup, and reset work to get your yard ready for the season.</p>
+                    </article>
+                    <article class="service">
+                        <h3>Garden Bed Maintenance</h3>
+                        <p>Weeding, reshaping, pruning, and mulch touch-ups to keep beds neat and healthy.</p>
+                    </article>
+                    <article class="service">
+                        <h3>General Yard Help</h3>
+                        <p>Need a hand with outdoor projects? Chuck can help with seasonal prep and property refreshes.</p>
+                    </article>
+                </div>
+            </div>
         </section>
 
-        <article>
-            <h2>Example Article</h2>
-            <p>This is an <code>article</code> element. It is used for a self-contained piece of content.</p>
-            <blockquote>
-                <p>"Learning HTML helps you build websites."</p>
-            </blockquote>
-        </article>
-
-        <aside>
-            <h3>Did You Know?</h3>
-            <p>The <code>&lt;aside&gt;</code> tag is for extra information like a sidebar.</p>
-        </aside>
-
-        <section>
-            <h2>Simple Table</h2>
-            <table border="1">
-                <caption>HTML tags you can use</caption>
-                <thead>
-                    <tr>
-                        <th>Tag</th>
-                        <th>Use</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>&lt;h1&gt; ... &lt;h6&gt;</td>
-                        <td>Headings</td>
-                    </tr>
-                    <tr>
-                        <td>&lt;p&gt;</td>
-                        <td>Paragraphs</td>
-                    </tr>
-                    <tr>
-                        <td>&lt;a&gt;</td>
-                        <td>Links</td>
-                    </tr>
-                </tbody>
-            </table>
+        <section id="gallery" class="card" aria-labelledby="gallery-title">
+            <div class="card-inner">
+                <h2 id="gallery-title">Recent Yard Work Photos</h2>
+                <p class="muted">A few simple examples of clean, healthy outdoor spaces Chuck can help maintain.</p>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80" alt="Green lawn and landscaping around a home">
+                        <figcaption>Fresh mowing and edging for a tidy look.</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=900&q=80" alt="Garden tools and plants ready for maintenance">
+                        <figcaption>Garden bed cleanup and plant care support.</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&w=900&q=80" alt="Backyard with trimmed grass and plants">
+                        <figcaption>Seasonal yard refresh for a cleaner property.</figcaption>
+                    </figure>
+                </div>
+            </div>
         </section>
 
-        <section id="contact">
-            <h2>Contact Form</h2>
-            <form>
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name"><br><br>
+        <section id="about" class="card split" aria-labelledby="about-title">
+            <div class="card-inner">
+                <h2 id="about-title">About Chuck</h2>
+                <p class="muted">Chuck is a Harwich-based landscaper working with homeowners throughout Lower Cape Cod. As a small local business, he focuses on quality work, honest communication, and dependable follow-through.</p>
+                <ol class="steps">
+                    <li>Reach out by call, text, or email.</li>
+                    <li>Get a fast estimate based on your property and needs.</li>
+                    <li>Enjoy a cleaner, healthier yard without the stress.</li>
+                </ol>
+                <div class="quote-card">
+                    "Chuck is easy to work with, dependable, and our yard always looks better after he visits."
+                </div>
+            </div>
+            <img class="about-image" src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1000&q=80" alt="Well-maintained backyard lawn">
+        </section>
 
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email"><br><br>
-
-                <label for="message">Message:</label><br>
-                <textarea id="message" name="message" rows="4" cols="30"></textarea><br><br>
-
-                <button type="submit">Send</button>
-            </form>
+        <section id="contact" class="card" aria-labelledby="contact-title">
+            <div class="card-inner">
+                <h2 id="contact-title">Contact Chuck's Landscaping</h2>
+                <p class="muted">Ready to book service or ask a question? Reach out and Chuck will get back to you soon.</p>
+                <div class="contact-grid">
+                    <div class="contact-box">
+                        <h3>Call or Text</h3>
+                        <p><a href="tel:+16177915220">(617) 791-5220</a></p>
+                        <p>Best for quick quotes and scheduling.</p>
+                        <button class="copy-btn" type="button" data-copy-text="(617) 791-5220">Copy phone</button>
+                    </div>
+                    <div class="contact-box">
+                        <h3>Email</h3>
+                        <p><a href="mailto:chuckdig@gmail.com">chuckdig@gmail.com</a></p>
+                        <p>Send photos of your yard for a fast response.</p>
+                        <button class="copy-btn" type="button" data-copy-text="chuckdig@gmail.com">Copy email</button>
+                    </div>
+                    <div class="contact-box">
+                        <h3>Service Area</h3>
+                        <p>Lower Cape Cod and nearby communities.</p>
+                        <p>Based in Harwich, Massachusetts.</p>
+                    </div>
+                    <div class="contact-box">
+                        <h3>Hours</h3>
+                        <p>Monday - Saturday</p>
+                        <p>7:30 AM - 6:00 PM</p>
+                    </div>
+                </div>
+                <div class="contact-box">
+                    <h3>Copy & Paste Contact Details</h3>
+                    <textarea id="contact-copy-block" class="copy-block" readonly>Chuck's Landscaping
+Phone: (617) 791-5220
+Email: chuckdig@gmail.com
+Area: Lower Cape Cod (based in Harwich, MA)
+Hours: Monday - Saturday, 7:30 AM - 6:00 PM</textarea>
+                    <button class="copy-btn" type="button" data-copy-target="contact-copy-block">Copy all details</button>
+                    <p id="copy-status" class="copy-status" aria-live="polite"></p>
+                </div>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>Thank you for visiting my page!</p>
+        <p>Chuck's Landscaping | Harwich, MA | Lower Cape Cod</p>
     </footer>
+    <script>
+        (function () {
+            const status = document.getElementById("copy-status");
+
+            async function copyText(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                    return;
+                }
+
+                const fallback = document.createElement("textarea");
+                fallback.value = text;
+                document.body.appendChild(fallback);
+                fallback.select();
+                document.execCommand("copy");
+                document.body.removeChild(fallback);
+            }
+
+            function setStatus(message) {
+                if (status) {
+                    status.textContent = message;
+                }
+            }
+
+            document.querySelectorAll("[data-copy-text], [data-copy-target]").forEach(function (button) {
+                button.addEventListener("click", async function () {
+                    try {
+                        const directText = button.getAttribute("data-copy-text");
+                        const targetId = button.getAttribute("data-copy-target");
+                        const target = targetId ? document.getElementById(targetId) : null;
+                        const text = directText || (target ? target.value : "");
+
+                        if (!text) {
+                            setStatus("Nothing to copy.");
+                            return;
+                        }
+
+                        await copyText(text);
+                        setStatus("Copied to clipboard. You can paste it anywhere.");
+                    } catch (error) {
+                        setStatus("Copy failed. Please copy manually.");
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
