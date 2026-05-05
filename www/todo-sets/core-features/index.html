@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do | Core Features</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>To-Do List (Core Features)</h1>
+    <p class="subtitle">Adds filtering: all, not completed, completed.</p>
+
+    <form id="todoForm" class="input-row">
+      <input id="todoInput" type="text" placeholder="Add a task..." autocomplete="off" />
+      <button class="add-btn" type="submit">Add Task</button>
+    </form>
+
+    <section class="toolbar">
+      <p class="count" id="taskCount">0 tasks</p>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all" type="button">All</button>
+        <button class="filter-btn" data-filter="active" type="button">Not Completed</button>
+        <button class="filter-btn" data-filter="completed" type="button">Completed</button>
+      </div>
+    </section>
+
+    <ul id="todoList"></ul>
+    <p class="empty" id="emptyState">No tasks match this filter.</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

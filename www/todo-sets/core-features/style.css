@@ -1,0 +1,154 @@
+:root {
+  --bg: #f5f7ff;
+  --panel: #ffffff;
+  --text: #1c2150;
+  --muted: #68709a;
+  --accent: #5f67ff;
+  --accent-soft: #e8eaff;
+  --danger: #ff4c73;
+  --border: #dde2ff;
+  --shadow: 0 18px 42px rgba(49, 57, 148, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 5% 10%, #e6ebff 0, transparent 40%),
+    radial-gradient(circle at 95% 90%, #e7f2ff 0, transparent 45%),
+    var(--bg);
+  color: var(--text);
+}
+
+.app {
+  width: min(760px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+}
+
+.subtitle {
+  margin: 8px 0 20px;
+  color: var(--muted);
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+input {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(95, 103, 255, 0.14);
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-btn {
+  color: #fff;
+  background: linear-gradient(130deg, #5f67ff, #7b8dff);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--accent-soft);
+  color: #3f4ad1;
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.task {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fcfcff;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+}
+
+.task.completed .task-text {
+  text-decoration: line-through;
+  color: #8d93ba;
+}
+
+.task-text {
+  word-break: break-word;
+}
+
+.delete-btn {
+  background: #ffe8ee;
+  color: var(--danger);
+  padding: 8px 12px;
+}
+
+.empty {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
